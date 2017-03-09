@@ -31,6 +31,10 @@ public class Location {
         }
     }
 
+    protected Location copy() {
+        return new Location(this.x, this.y, this.map);
+    }
+
     protected void left() {this.horizontal(-1);}
     protected void right() {this.horizontal(1);}
     protected void horizontal(int move) {
@@ -46,4 +50,8 @@ public class Location {
             this.y += move;
         }
     }
+
+    protected int getX() { return this.x; }
+    protected int getY() { return this.y; }
+
 }

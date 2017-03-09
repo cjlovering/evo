@@ -3,6 +3,8 @@ package server;
 import com.google.gson.Gson;
 import controller.DataStore;
 import game.*;
+import spark.Spark;
+import spark.webserver.SparkServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,8 @@ public class Server {
     public void routes(DataStore d) {
 
         this.g = new Gson();
+
+        Spark.port(9090);
 
         staticFileLocation("/public");
 

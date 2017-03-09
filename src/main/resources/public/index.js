@@ -23,6 +23,7 @@ var init = function() {
         }
     });
 };
+
 var requestData = function() {
     $.ajax({
         url: '/data',
@@ -36,6 +37,7 @@ var requestData = function() {
         }
     });
 };
+
 var drawBoard = function(count, size) {
     var margin = size / count;
     var lines_data = Array.prototype.concat(
@@ -56,6 +58,7 @@ var drawBoard = function(count, size) {
         .attr("d", (d) => line(d[0]));
 
 };
+
 var drawAgents = function(data, count, size) {
     var t = d3.transition()
               .duration(225);

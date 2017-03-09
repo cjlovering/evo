@@ -34,9 +34,23 @@ abstract public class Agent {
                 // (50% chance to be unseen unless within 2)
                 this.hide();
                 break;
+            case 7:
+                // actively hide
+                // (50% chance to be unseen unless within 2)
+                this.mate();
+                break;
+            case 8:
+                // invalid action (TODO: log this)
+                this.chooseMove((int)(Math.random() * 8));
+                break;
         }
     }
 
     abstract public void rest();
     abstract public void hide();
+    abstract public Agent mate();
+    abstract public int getType();
+
+    protected Location getLocation() { return this.location; }
+
 }

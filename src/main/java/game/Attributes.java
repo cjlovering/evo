@@ -7,6 +7,7 @@ public class Attributes {
     private int speed;
     private boolean alive = true;
 
+
     public Attributes(int life, int speed) {
         this.life = life;
         this.speed = speed;
