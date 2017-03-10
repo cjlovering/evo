@@ -24,17 +24,20 @@ public class GameEngine {
 
         // define order of actions
         List<Action> order =
-                Arrays.asList(Action.FIGHT, Action.LEFT, Action.DOWN, Action.RIGHT,
+                Arrays.asList(Action.LEFT, Action.DOWN, Action.RIGHT,
                               Action.UP,    Action.REST, Action.HIDE);
 
+        // fight require adjacent agents (actually it may depend on more than that depending on rules...)
+        groups.get(Action.FIGHT)
+              .forEach(agent -> agent.executeAction(agents.stream()
+                                                          .filter(other -> agent.adjacentTo(other))
+                                                          .collect(Collectors.toList())));
+
         // execute actions in correct order
-        // TODO: for non-fight, we want to just give an empty list
         order.stream()
              .forEach(action ->
                      groups.get(action)
-                           .forEach(agent -> agent.executeAction(agents.stream()
-                                                                       .filter(other -> agent.adjacentTo(other))
-                                                                       .collect(Collectors.toList()))));
+                           .forEach(Agent::executeAction));
 
         // get new children and join them
         List<Agent> children =
