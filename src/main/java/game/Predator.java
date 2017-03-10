@@ -1,7 +1,6 @@
 package game;
 
 import java.util.List;
-import java.util.Optional;
 
 public class Predator extends Agent {
     public final String _class = "predator"; //this is used for json conversion & css classes
@@ -21,7 +20,7 @@ public class Predator extends Agent {
     }
 
     @Override
-    public void fight(Optional<List<Agent>> opponents) {
+    public void fight(List<Agent> opponents) {
 
     }
 

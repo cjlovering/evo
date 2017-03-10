@@ -1,8 +1,8 @@
 package game;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 abstract public class Agent {
     protected Location location;
@@ -26,17 +26,16 @@ abstract public class Agent {
     }
 
     public void executeAction() {
-        executeAction(Optional.empty());
+        executeAction(Collections.emptyList());
     }
 
     /**
      * Executes agent's action
      * @param opponents - if they fight, the opponents to fight
      */
-    public void executeAction(Optional<List<Agent>> opponents) {
+    public void executeAction(List<Agent> opponents) {
         switch (this.attr.getAction()) {
             case RIGHT:
-                // do something
                 this.location.right();
                 break;
             case LEFT:
@@ -49,7 +48,6 @@ abstract public class Agent {
                 this.location.down();
                 break;
             case REST:
-                // stay still... use less energy
                 this.rest();
                 break;
             case HIDE:
@@ -76,7 +74,7 @@ abstract public class Agent {
     abstract public void rest();
     abstract public void hide();
     abstract public Agent mate();
-    abstract public void fight(Optional<List<Agent>> opponents);
+    abstract public void fight(List<Agent> opponents);
 
     protected Location getLocation() { return this.location; }
 
@@ -88,4 +86,6 @@ abstract public class Agent {
     public boolean isDoing(Action action) {
         return action == attr.getAction();
     }
+
+    public boolean isAlive() { return this.attr.isAlive(); }
 }

@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Peasant extends Agent {
     public final String _class = "peasant";
@@ -26,7 +25,7 @@ public class Peasant extends Agent {
     }
 
     @Override
-    public void fight(Optional<List<Agent>> opponents) {
+    public void fight(List<Agent> opponents) {
 
     }
 }
