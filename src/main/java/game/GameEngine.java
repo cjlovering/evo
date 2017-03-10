@@ -28,10 +28,13 @@ public class GameEngine {
                               Action.UP,    Action.REST, Action.HIDE);
 
         // execute actions in correct order
+        // TODO: for non-fight, we want to just give an empty list
         order.stream()
              .forEach(action ->
                      groups.get(action)
-                           .forEach(agent -> agent.executeAction(groups.get(action))));
+                           .forEach(agent -> agent.executeAction(agents.stream()
+                                                                       .filter(other -> agent.adjacentTo(other))
+                                                                       .collect(Collectors.toList()))));
 
         // get new children and join them
         List<Agent> children =

@@ -60,4 +60,8 @@ public class Location {
     protected int getX() { return this.x; }
     protected int getY() { return this.y; }
 
+    protected boolean isAdjacent(Location other) {
+        return  Math.abs(this.x - other.x) <= 1 && Math.abs(this.y - other.y) <= 1;
+    }
+
 }

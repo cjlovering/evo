@@ -3,8 +3,6 @@ package server;
 import com.google.gson.Gson;
 import controller.DataStore;
 import game.*;
-import spark.Spark;
-import spark.webserver.SparkServer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +10,7 @@ import java.util.List;
 
 import static spark.Spark.get;
 import static spark.Spark.staticFileLocation;
+import static spark.SparkBase.port;
 
 public class Server {
     private Gson g;
@@ -24,17 +23,19 @@ public class Server {
         for (int i = 0; i < 10; i++) agents.add(new Peasant(Location.randomLocation(20, map)));
         for (int i = 0; i < 2;  i++) agents.add(new Predator(Location.randomLocation(20, map)));
         DataStore d = new DataStore(gameMeta, agents);
-        s.routes(d);
+        s.routes(d, map);
     }
 
     public Server() {}
 
-    public void routes(DataStore d) {
+    public void routes(DataStore d, GameMap map) {
 
         this.g = new Gson();
         List<Action> actions = Arrays.asList(Action.values());
 
         staticFileLocation("/public");
+
+        port(9090);
 
         get("/", (req, rep) -> {
             rep.status(200);
@@ -46,9 +47,10 @@ public class Server {
         get("/init", (req, rep) -> g.toJson(d.getGameMeta()));
 
         get("/data", (req, rep) -> {
-            d.getAgents()
-             .stream()
-             .forEach(a -> a.randomMove(actions.get((int)(Math.random() * actions.size()))));
+
+            d.updateAgents(GameEngine.run(d.getAgents(),
+                                          map,
+                                          d.getGameMeta()));
 
             return g.toJson(d.getAgents());
         });

@@ -18,7 +18,7 @@ abstract public class Agent {
      */
     public void randomMove(Action a){
         this.attr.setAction(a);
-        executeAction();
+        this.executeAction();
     }
 
     public Action getAction() {
@@ -26,7 +26,7 @@ abstract public class Agent {
     }
 
     public void executeAction() {
-        executeAction(Collections.emptyList());
+        this.executeAction(Collections.emptyList());
     }
 
     /**
@@ -84,7 +84,11 @@ abstract public class Agent {
      * @return - if actions match
      */
     public boolean isDoing(Action action) {
-        return action == attr.getAction();
+        return action == this.attr.getAction();
+    }
+
+    public boolean adjacentTo(Agent other) {
+        return this.location.isAdjacent(other.getLocation());
     }
 
     public boolean isAlive() { return this.attr.isAlive(); }
