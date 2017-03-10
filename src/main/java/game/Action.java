@@ -1,7 +1,15 @@
 package game;
 
 /**
- * Created by Xenocidist on 3/9/17.
+ * classes of possible actions for agents
  */
 public enum Action {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+    REST,
+    HIDE,
+    MATE,
+    FIGHT
 }

@@ -1,8 +1,11 @@
 package game;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameEngine {
+
     /**
      * runs an iteration of the game
      * TODO: make this more general, so that rules are definable
@@ -12,19 +15,15 @@ public class GameEngine {
      */
     public static void run(List<Agent> agents, GameMap map, GameMeta meta) {
 
-        // select a move
+        // select a move (side-effect: clear old state)
+        agents.stream().forEach(a -> a.selectAction(agents));
+
+        // filter groups
+        Map<Action, List<Agent>> groups =
+                agents.stream().collect(Collectors.groupingBy(Agent::getAction));
 
 
-        //
-
-        //for ease track agents in a representation of the map
-        agents.stream().forEach(a -> map.insertLocation(a.getLocation(), a.getType()));
-
-        // fight
-        agents.stream().forEach(a -> a.chooseMove(5));
-
-
-        // height
+        // fight (only preds can fight)
 
 
         // move
@@ -39,7 +38,7 @@ public class GameEngine {
         // mate
 
 
-        // rm the dead
+        // die
 
     }
 }

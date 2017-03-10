@@ -10,11 +10,17 @@ public class Location {
         this.y = y;
         this.map = map;
     }
+
     public static Location randomLocation(int max, GameMap map) {
         return new Location( (int)(Math.random() * (max - 1)), (int)(Math.random() * (max - 1)), map);
     }
+
+    /**
+     * chooses a random amount of movement up to max
+     * @param max
+     */
     protected void randomDelta(int max) {
-        int move = (int)(Math.random() * max + 1) * (Math.random() > 0.5 ? -1 : 1);
+        int move = (int)(Math.random() * (max + 1)) * (Math.random() > 0.5 ? -1 : 1);
 
         if (Math.random() > 0.5) {
             if (this.map.legalMove(this.x + move, this.y)) {

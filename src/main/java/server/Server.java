@@ -7,6 +7,7 @@ import spark.Spark;
 import spark.webserver.SparkServer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static spark.Spark.get;
@@ -17,7 +18,7 @@ public class Server {
 
     public static void main(String[] args) {
         Server s = new Server();
-        GameMeta gameMeta = new GameMeta(20, "peasant vs predator");
+        GameMeta gameMeta = new GameMeta(20, "predator vs peasant");
         List<Agent> agents = new ArrayList<>();
         GameMap map = new GameMap(20, 20);
         for (int i = 0; i < 10; i++) agents.add(new Peasant(Location.randomLocation(20, map)));
@@ -31,8 +32,7 @@ public class Server {
     public void routes(DataStore d) {
 
         this.g = new Gson();
-
-        Spark.port(9090);
+        List<Action> actions = Arrays.asList(Action.values());
 
         staticFileLocation("/public");
 
@@ -46,7 +46,10 @@ public class Server {
         get("/init", (req, rep) -> g.toJson(d.getGameMeta()));
 
         get("/data", (req, rep) -> {
-            d.getAgents().stream().forEach(a -> a.randomMove());
+            d.getAgents()
+             .stream()
+             .forEach(a -> a.randomMove(actions.get((int)(Math.random() * actions.size()))));
+
             return g.toJson(d.getAgents());
         });
     }

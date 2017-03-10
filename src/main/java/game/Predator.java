@@ -1,25 +1,33 @@
 package game;
 
+import java.util.List;
+import java.util.Optional;
+
 public class Predator extends Agent {
-    public final String _class = "predator";
-    //public final Agents _class = Agents.peasant;
+    public final String _class = "predator"; //this is used for json conversion & css classes
 
     public Predator(Location l){
         super(l);
     }
-    public void randomMove(){
-        this.chooseMove((int)(Math.random() * 6));
-    }
+
+    @Override
     public void rest() {
 
     }
+
+    @Override
     public void hide() {
 
     }
+
+    @Override
+    public void fight(Optional<List<Agent>> opponents) {
+
+    }
+
+    @Override
     public Predator mate() {
         return new Predator(this.location.copy());
     }
-
-    public int getType() { return 2; }
 
 }
