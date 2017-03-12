@@ -1,8 +1,9 @@
 package server;
 
 import com.google.gson.Gson;
-import controller.DataStore;
+import controller.Store;
 import game.*;
+import learning.RandomModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,21 +18,20 @@ public class Server {
 
     public static void main(String[] args) {
         Server s = new Server();
-        GameMeta gameMeta = new GameMeta(20, "predator vs peasant");
         List<Agent> agents = new ArrayList<>();
+        GameMeta gameMeta = new GameMeta(20, "predator vs peasant");
         GameMap map = new GameMap(20, 20);
         for (int i = 0; i < 10; i++) agents.add(new Peasant(Location.randomLocation(20, map)));
         for (int i = 0; i < 2;  i++) agents.add(new Predator(Location.randomLocation(20, map)));
-        DataStore d = new DataStore(gameMeta, agents);
+        Store d = new Store(gameMeta, map, agents);
         s.routes(d, map);
     }
 
     public Server() {}
 
-    public void routes(DataStore d, GameMap map) {
+    public void routes(Store d, GameMap map) {
 
         this.g = new Gson();
-        List<Action> actions = Arrays.asList(Action.values());
 
         staticFileLocation("/public");
 
@@ -48,9 +48,8 @@ public class Server {
 
         get("/data", (req, rep) -> {
 
-            d.updateAgents(GameEngine.run(d.getAgents(),
-                                          map,
-                                          d.getGameMeta()));
+            RandomModel randModel = new RandomModel();
+            GameEngine.run(d, randModel);
 
             return g.toJson(d.getAgents());
         });

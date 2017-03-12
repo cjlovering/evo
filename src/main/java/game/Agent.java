@@ -13,11 +13,11 @@ abstract public class Agent {
     }
 
     /**
-     * Executes given random action
-     * @param a - the random action
+     * Executes random action
      */
-    public void randomMove(Action a){
-        this.attr.setAction(a);
+    public void randomAction(){
+        List<Action> actions = Arrays.asList(Action.values());
+        this.attr.setAction(actions.get((int)Math.random()*actions.size()));
         this.executeAction();
     }
 

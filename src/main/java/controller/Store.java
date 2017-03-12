@@ -1,17 +1,20 @@
 package controller;
 
 import game.Agent;
+import game.GameMap;
 import game.GameMeta;
 
 import java.util.List;
 
-public class DataStore {
+public class Store {
     private GameMeta gameMeta;
+    private GameMap gameMap;
     private List<Agent> agents;
 
 
-    public DataStore(GameMeta gameMeta, List<Agent> agents) {
+    public Store(GameMeta gameMeta, GameMap gameMap, List<Agent> agents) {
         this.gameMeta = gameMeta;
+        this.gameMap = gameMap;
         this.agents = agents;
     };
 
@@ -29,6 +32,10 @@ public class DataStore {
 
     public GameMeta getGameMeta() {
         return this.gameMeta;
+    }
+
+    public GameMap getGameMap() {
+        return this.gameMap;
     }
 
 
