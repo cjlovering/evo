@@ -35,8 +35,6 @@ public class Server {
 
         staticFileLocation("/public");
 
-        port(9090);
-
         get("/", (req, rep) -> {
             rep.status(200);
             rep.type("text/html");
@@ -50,8 +48,8 @@ public class Server {
 
             RandomModel randModel = new RandomModel();
             GameEngine.run(d, randModel);
-
             return g.toJson(d.getAgents());
+
         });
     }
 }

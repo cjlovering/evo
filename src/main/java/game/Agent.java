@@ -3,6 +3,7 @@ package game;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 abstract public class Agent {
     protected Location location;
@@ -13,12 +14,11 @@ abstract public class Agent {
     }
 
     /**
-     * Executes random action
+     * sets random action
      */
     public void randomAction(){
         List<Action> actions = Arrays.asList(Action.values());
-        this.attr.setAction(actions.get((int)Math.random()*actions.size()));
-        this.executeAction();
+        this.attr.setAction(actions.get((int)(Math.random()*actions.size())));
     }
 
     public Action getAction() {
@@ -28,6 +28,11 @@ abstract public class Agent {
     public void executeAction() {
         this.executeAction(Collections.emptyList());
     }
+
+    public void losesLife(int i) {
+        this.attr.deltaLife(i);
+    }
+
 
     /**
      * Executes agent's action
@@ -53,9 +58,6 @@ abstract public class Agent {
             case HIDE:
                 this.hide();
                 break;
-            case MATE:
-                this.mate();
-                break;
             case FIGHT:
                 this.fight(opponents);
                 break;
@@ -65,16 +67,18 @@ abstract public class Agent {
         }
     }
 
-    public void selectAction(List<Agent> agents) {
-        //policy implemented here somehow...
-        List<Action> actions = Arrays.asList(Action.values());
-        this.attr.setAction(actions.get((int)(Math.random() * actions.size())));
-    }
+    abstract public boolean canMate();
 
     abstract public void rest();
     abstract public void hide();
-    abstract public Agent mate();
+    abstract public Optional<Agent> mate(Optional<Agent> other);
     abstract public void fight(List<Agent> opponents);
+
+    public void fight(boolean inflicts, Agent opponent ) {
+        if (inflicts) {
+            opponent.losesLife(1);
+        }
+    }
 
     protected Location getLocation() { return this.location; }
 
