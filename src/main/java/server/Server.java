@@ -3,7 +3,8 @@ package server;
 import com.google.gson.Gson;
 import controller.Store;
 import game.GameEngine;
-import learning.RandomModel;
+import learning.BasicModel;
+import learning.IModel;
 
 import static spark.Spark.get;
 import static spark.Spark.staticFileLocation;
@@ -19,7 +20,7 @@ public class Server {
     public Server() {}
 
     public void routes(Store d) {
-        RandomModel randModel = new RandomModel();
+        IModel model = new BasicModel();
         this.g = new Gson();
 
         staticFileLocation("/public");
@@ -35,7 +36,7 @@ public class Server {
 
         get("/data", (req, rep) -> {
             d.refresh();
-            GameEngine.run(d, randModel);
+            GameEngine.run(d, model);
             return g.toJson(d.getAgents());
 
         });

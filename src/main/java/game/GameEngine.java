@@ -39,9 +39,9 @@ public class GameEngine {
         // fight require adjacent agents (actually it may depend on more than that depending on rules...)
         agents.stream()
               .filter(agent -> agent.isDoing(Action.FIGHT))
-              .forEach(agent -> agent.executeAction(agents.stream()
-                                                          .filter(other -> agent.adjacentTo(other))
-                                                          .collect(Collectors.toList())));
+              .forEach(agent -> agent.fight(model.determineOpponent(agent, agents.stream()
+                                                                  .filter(other -> agent.adjacentTo(other))
+                                                                  .collect(Collectors.toList()))));
 
         // execute actions in correct order
         order.stream()
@@ -49,7 +49,7 @@ public class GameEngine {
                                       .filter(agent -> agent.isDoing(action))
                                       .forEach(Agent::executeAction));
 
-        // get new children and join them TODO: condense this
+        // get new children and join them
         List<Agent> maters =  agents.stream()
                                     .filter(agent -> agent.isDoing(Action.MATE))
                                     .collect(Collectors.toList());

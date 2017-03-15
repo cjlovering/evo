@@ -10,15 +10,17 @@ abstract public class Agent {
     protected final int IS_OLD;
     protected final int TIME_OUT;
     protected final int MAX_AGE;
+    protected final double HURTS_OPPONENT;
 
     private ArrayList<Agent> children = new ArrayList<>();
 
-    public Agent(Location l, int IS_ADULT, int IS_OLD, int TIME_OUT, int MAX_AGE){
+    public Agent(Location l, int IS_ADULT, int IS_OLD, int TIME_OUT, int MAX_AGE, double HURTS_OPPONENT){
         this.location = l;
         this.IS_ADULT = IS_ADULT;
         this.IS_OLD = IS_OLD;
         this.TIME_OUT = TIME_OUT;
         this.MAX_AGE = MAX_AGE;
+        this.HURTS_OPPONENT = HURTS_OPPONENT;
     }
 
     /**
@@ -33,20 +35,15 @@ abstract public class Agent {
         return this.attr.getAction();
     }
 
-    public void executeAction() {
-        this.executeAction(Collections.emptyList());
-    }
 
     public void losesLife(int i) {
         this.attr.deltaLife(-i);
     }
 
-
     /**
-     * Executes agent's action
-     * @param opponents - if they fight, the opponents to fight
+     * executes agent's action
      */
-    public void executeAction(List<Agent> opponents) {
+    public void executeAction() {
         switch (this.attr.getAction()) {
             case RIGHT:
                 this.location.right();
@@ -66,9 +63,6 @@ abstract public class Agent {
             case HIDE:
                 this.hide();
                 break;
-            case FIGHT:
-                this.fight(opponents);
-                break;
             default:
                 // invalid action (TODO: log this)
                 break;
@@ -84,7 +78,11 @@ abstract public class Agent {
     }
 
     public Optional<Agent> mate(Optional<Agent> other) {
-        if (other.isPresent() && this.canMate() && other.get().canMate() && this.mateCompatible(other.get())) {
+        if (other.isPresent()
+                && this.canMate()
+                && other.get().canMate()
+                && this.mateCompatible(other.get())) {
+
             Agent child = this.copy();
             this.addChild(child);
             other.get().addChild(child);
@@ -95,11 +93,10 @@ abstract public class Agent {
 
     abstract public Agent copy();
 
-    abstract public void fight(List<Agent> opponents);
 
-    public void fight(boolean inflicts, Agent opponent ) {
-        if (inflicts) {
-            opponent.losesLife(1);
+    public void fight(Optional<Agent> opponent ) {
+        if (opponent.isPresent() && Math.random() < this.HURTS_OPPONENT) {
+            opponent.get().losesLife(1);
         }
     }
 

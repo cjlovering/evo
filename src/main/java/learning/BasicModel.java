@@ -6,12 +6,20 @@ import game.Agent;
 import java.util.List;
 import java.util.Optional;
 
-public class RandomModel implements IModel {
+public class BasicModel implements IModel {
+
+    /**
+     * this model will make very simplistic choices
+     * @param store
+     */
     public void determineActions(Store store) {
         store.getAgents().stream().forEach(Agent::randomAction);
     }
 
     public Optional<Agent> determineOpponent(Agent fighter, List<Agent> opponents) {
-       return Optional.of(opponents.get(0));
+        return opponents.stream()
+                 .filter(opponent -> !fighter.mateCompatible(opponent))
+                 .findFirst();
     }
+
 }
