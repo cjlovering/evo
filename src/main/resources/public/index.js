@@ -1,5 +1,6 @@
 const length = 500;
 var count, title, svg;
+const RESP_TIME = 5;
 
 var init = function() {
     svg = d3.select(".Aligner-item")
@@ -30,7 +31,7 @@ var requestData = function() {
         dataType: 'json',
         success: function(response) {
             drawAgents(response, count, length);
-            setTimeout(requestData, 250);
+            setTimeout(requestData, RESP_TIME);
         },
         error: function(xhr) {
             console.log("error requesting dataset list");
@@ -61,7 +62,7 @@ var drawBoard = function(count, size) {
 
 var drawAgents = function(data, count, size) {
     var t = d3.transition()
-              .duration(225);
+              .duration(RESP_TIME);
 
     var margin = size / count;
 

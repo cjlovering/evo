@@ -21,7 +21,10 @@ public class GameEngine {
         GameMap map = store.getGameMap();
         GameMeta meta = store.getGameMeta();
 
-        // select a move (side-effect: clear old state)
+        // upkeep
+        agents.stream().forEach(Agent::upkeep);
+
+        // select a move
         model.determineActions(store);
 
         // filter groups
@@ -51,34 +54,24 @@ public class GameEngine {
                                     .filter(agent -> agent.isDoing(Action.MATE))
                                     .collect(Collectors.toList());
 
-        List<Agent> peasantMaters =  maters.stream()
-                                           .filter(agent -> agent instanceof Peasant)
-                                           .collect(Collectors.toList());
-
-        List<Agent> predatorMaters =  maters.stream()
-                                            .filter(agent -> agent instanceof Predator)
-                                            .collect(Collectors.toList());
-
-        List<Agent> peasantChildren =
-                peasantMaters.stream()
-                             .map(agent -> ((Peasant)agent).mate(peasantMaters.stream().filter(other -> agent.adjacentTo(other)).findFirst()))
+        List<Agent> children =
+                maters.stream()
+                             .map(agent -> agent.mate(maters.stream().filter(other -> agent.adjacentTo(other)).findFirst()))
                              .filter(Optional::isPresent)
                              .map(Optional::get)
                              .collect(Collectors.toList());
 
-        List<Agent> predatorChildren =
-                predatorMaters.stream()
-                        .map(agent -> ((Predator)agent).mate(predatorMaters.stream().filter(other -> agent.adjacentTo(other)).findFirst()))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .collect(Collectors.toList());
+        // add the new
+        agents.addAll(children);
+
+        // clear the dead & the old
+        agents.stream().forEach(Agent::cleanUp);
 
         // remove the dead
-        agents.addAll(peasantChildren);
-        agents.addAll(predatorChildren);
+        agents.removeAll(agents.parallelStream()
+                                .filter(Agent::isDead)
+                                .collect(Collectors.toList()));
 
-        return agents.stream()
-                     .filter(Agent::isAlive)
-                     .collect(Collectors.toList());
+        return agents;
     }
 }
