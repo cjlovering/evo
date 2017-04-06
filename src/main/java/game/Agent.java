@@ -149,6 +149,7 @@ abstract public class Agent {
      * What does winning a fight do to the agent?
      */
     abstract protected void victory();
+    abstract public void overpopulation(int neighbors);
 
     protected Location getLocation() { return this.location; }
 

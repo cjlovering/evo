@@ -67,6 +67,15 @@ public class GameEngine {
         // determine rewards
         agents.stream().forEach(Agent::determineReward);
 
+        // over population - any agent that has 4 neighbors of the same race dies
+        // this could be implemented in a far better way...
+        agents.stream()
+                .forEach(agent -> agent.overpopulation((int)
+                        agents.stream()
+                                .filter(other -> agent.adjacentTo(other))
+                                .filter(other -> agent.mateCompatible(other))
+                                .count()));
+
         // remove the dead
         agents.removeAll(agents.parallelStream()
                                 .filter(Agent::isDead)

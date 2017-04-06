@@ -9,7 +9,7 @@ public enum Action {
     UP,
     DOWN,
     REST,
-    HIDE,
+    HIDE, //unused currently
     MATE,
     FIGHT
 }

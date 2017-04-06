@@ -5,11 +5,11 @@ public class Attributes {
     //  status of a unit
     private int life;
     private final int maxLife;
-    private int speed;
+    private int speed; //currently unused
     private int age = 0;
     private boolean alive = true;
     private Action action;
-    private int lastMate = 0;
+    private int lastMate = 0;//currently unused
     private int reward = 0;
     private int hungerLevel;
 
@@ -21,8 +21,6 @@ public class Attributes {
     }
 
     public Action getAction() { return action; }
-
-    public int getLastMate() { return lastMate; }
 
     public boolean isAlive() {
         return alive;
@@ -42,8 +40,9 @@ public class Attributes {
      */
     public void deltaLife(int delta) {
 
-        if (this.life + delta <= maxLife)
+        if (this.life + delta <= maxLife) {
             this.life += delta;
+        }
 
         if (this.life + delta <= 0)
             this.alive = false;
@@ -59,7 +58,7 @@ public class Attributes {
     protected boolean mateEligible(int IS_ADULT, int IS_OLD, int TIME_OUT) {
         //TODO: issue with two of the checks...
         return (this.isAlive() //is alive
-               // && (this.getAge() > IS_ADULT ) //is an adult
+                // && (this.getAge() > IS_ADULT ) // because its random they die too fast for this
                 && (this.getAge() < IS_OLD * 365));  //is not too hold
                // && (this.getAge() - this.getLastMate() > TIME_OUT) ); //some cost of energy?
     }

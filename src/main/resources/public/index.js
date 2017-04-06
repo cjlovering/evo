@@ -1,8 +1,8 @@
 const length = 500;
 var count, title, svg;
-const RESP_TIME = 5;
+const RESP_TIME = 50; //how quickly we ask for a response
 
-var init = function() {
+const init = function() {
     svg = d3.select(".Aligner-item")
         .append("svg")
         .attr("width", length+5)
@@ -25,7 +25,7 @@ var init = function() {
     });
 };
 
-var requestData = function() {
+const requestData = function() {
     $.ajax({
         url: '/data',
         dataType: 'json',
@@ -39,9 +39,9 @@ var requestData = function() {
     });
 };
 
-var drawBoard = function(count, size) {
-    var margin = size / count;
-    var lines_data = Array.prototype.concat(
+const drawBoard = function(count, size) {
+    let margin = size / count;
+    let lines_data = Array.prototype.concat(
                 d3.range(0, count+1) //rows
                     .map(i => ([{ "x":i*margin, "y":0}, {"x":i*margin, "y":size}]))
             .map((d,j) => [d, (j == 0 || j == count) ? 'outer' : 'inner']),
@@ -49,7 +49,7 @@ var drawBoard = function(count, size) {
                     .map(j => ([{ "x":0, "y":j*margin}, {"x":size, "y":j*margin}]))
                     .map((d,i) => [d, (i == 0 || i == count) ? 'outer' : 'inner']));
 
-    var line = d3.line()
+    let line = d3.line()
                  .x((d) => d.x)
                  .y((d) => d.y);
 
@@ -60,15 +60,15 @@ var drawBoard = function(count, size) {
 
 };
 
-var drawAgents = function(data, count, size) {
-    var t = d3.transition()
+const drawAgents = function(data, count, size) {
+    const t = d3.transition()
               .duration(RESP_TIME);
 
-    var margin = size / count;
+    let margin = size / count;
 
-    var expand = (x) => x * margin;
+    let expand = (x) => x * margin;
 
-    var circles = svg.selectAll("circle").data(data);
+    let circles = svg.selectAll("circle").data(data);
 
     circles
         .exit()

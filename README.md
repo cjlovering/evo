@@ -41,23 +41,16 @@ chance all their children can survive. Will they scatter or run?
     * peasants die if they don't rest for 2 days out of every 5
     * predators die if they don't east 1 out of 10 days
 
-## tasks
+## plans
 
 * start using dl4j, and implement basic rl models.
 * have a server running and give options to users to display different checkpoints
     * try different configurations and numbers of agents
     * select which model to choose
-    
-## notes
-
-Agent types could really be configured purely by a couple parameters and stored
-in JSON files. I have it ~85% implemented, but for now its easier to move forward
-with having them be real classes (I think). This should probably be done if there
-is a focus in the front end viz, as that would likely make that easier.
 
 ## tweaks to try
 
-* percentatges for victory for each class for a fight, currently 90% and 10% (pred, prey)
+* percentatges for victory for each class for a fight, currently 95% and 5% (pred, prey)
 * amount of hunger
 * max age
 

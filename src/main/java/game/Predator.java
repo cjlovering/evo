@@ -4,8 +4,14 @@ public class Predator extends Agent {
 
     public Predator(Location l){
         super(l, "predator", 45, 200, 9, 250, 0.90);
-        this.attr = new Attributes(2, 1, 15);
+        this.attr = new Attributes(2, 1, 25);
     }
+
+    @Override
+    public void overpopulation(int neighbors) {
+        // no direct effect, it will just have less peasants to eat.
+    }
+
 
     @Override
     public void hide() {
@@ -16,7 +22,6 @@ public class Predator extends Agent {
     public void rest() {
         // +1 resting, -1 for turn
         this.attr.deltaHunger(1);
-
         this.attr.deltaLife(1);
     }
 

@@ -5,6 +5,10 @@ import game.Store;
 import learning.BasicModel;
 import learning.IModel;
 
+/**
+ * @brief this class is used to encapsulate the game
+ * @notes the requirements aren't well defined, so this can be changed completely
+ */
 public class Session {
 
     public static void main(String[] args) {
