@@ -9,11 +9,17 @@ damage, and peasants have a low chance. Everything can only take one action in a
 step. If peasants converge together and attack/trap a predator, there is a higher
 chance all their children can survive. Will they scatter or run?
 
+## setup
+
+This project uses *gradle* and currently requires few dependencies, although dl4j
+will be added soon. I enable auto-import in my ide (intellij), and everything
+works smoothly. 
+
 ## design
 
 * currently a session is run, loading and starting the game (very simple)
-* its easiest to observe this by actually running the server and watching it in localhost
-    * the speed of the events is turned down
+* its easiest to observe this by running the server and watching it in localhost
+    * the speed of the events is turned down to be obervable
     * 0.0.0.0:4567
 
 ## experiments
@@ -47,6 +53,7 @@ chance all their children can survive. Will they scatter or run?
 * have a server running and give options to users to display different checkpoints
     * try different configurations and numbers of agents
     * select which model to choose
+    * having live charts showing relative populations and/or rewards
 
 ## tweaks to try
 
