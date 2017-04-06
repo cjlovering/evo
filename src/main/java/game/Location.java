@@ -11,10 +11,6 @@ public class Location {
         this.map = map;
     }
 
-    public static Location randomLocation(int max, GameMap map) {
-        return new Location( (int)(Math.random() * (max - 1)), (int)(Math.random() * (max - 1)), map);
-    }
-
     /**
      * chooses a random amount of movement up to max
      * @param max

@@ -2,8 +2,7 @@ package game;
 
 public class Attributes {
 
-    // later on have some basic tradeoffs of energy vs strength/vision/intelligence
-    // for now, attributes and state
+    //  status of a unit
     private int life;
     private final int maxLife;
     private int speed;
@@ -11,22 +10,17 @@ public class Attributes {
     private boolean alive = true;
     private Action action;
     private int lastMate = 0;
+    private int reward = 0;
+    private int hungerLevel;
 
-    public Attributes(int life, int speed) {
+    public Attributes(int life, int speed, int hungerLevel) {
         this.life = life;
         this.maxLife = life;
         this.speed = speed;
+        this.hungerLevel = hungerLevel;
     }
 
     public Action getAction() { return action; }
-
-    public int getLife() {
-        return life;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
 
     public int getLastMate() { return lastMate; }
 
@@ -55,21 +49,66 @@ public class Attributes {
             this.alive = false;
     }
 
+    /**
+     * determines if agent is eligible for mating
+     * @param IS_ADULT
+     * @param IS_OLD
+     * @param TIME_OUT
+     * @return whether or not they are eligible for mating
+     */
     protected boolean mateEligible(int IS_ADULT, int IS_OLD, int TIME_OUT) {
-        return (this.isAlive()
-                && (this.getAge() > IS_ADULT)
-                && (this.getAge() < IS_OLD)
-                && (this.getLastMate() - this.getAge() > TIME_OUT) );
+        //TODO: issue with two of the checks...
+        return (this.isAlive() //is alive
+               // && (this.getAge() > IS_ADULT ) //is an adult
+                && (this.getAge() < IS_OLD * 365));  //is not too hold
+               // && (this.getAge() - this.getLastMate() > TIME_OUT) ); //some cost of energy?
     }
 
+    /**
+     * Performs necessary updates at the begining of a step.
+     */
     public void upkeep() {
         this.age++;
+        this.reward = 0;
     }
 
-    public void cleanUp(int MAX_AGE) {
-        if (this.life > MAX_AGE && Math.random() < 0.55) {
+    /**
+     * Called at the end of a step of the game
+     * If the unit's age is past the maxLife,
+     * it will die with a random chance
+     */
+    public void cleanUp() {
+        if (this.age > (365 * this.maxLife) && Math.random() < 0.35) {
             this.alive = false;
         }
+        if (this.hungerLevel < 0 && Math.random() < 0.35) {
+            this.alive = false;
+        }
+        this.hungerLevel--;
+    }
+
+    /**
+     * Change the reward for the turn
+     * @param r
+     */
+    public void deltaReward(int r) {
+        this.reward += r;
+    }
+
+
+    /**
+     * Get less hungry
+     * @param h
+     */
+    public void deltaHunger(int h) {
+        this.hungerLevel += h;
+    }
+
+    /*
+     * @return current reward for this time step
+     */
+    public int getReward() {
+        return this.reward;
     }
 
 }

@@ -1,7 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
-import controller.Store;
+import game.Store;
 import game.GameEngine;
 import learning.BasicModel;
 import learning.IModel;
@@ -19,7 +19,7 @@ public class Server {
 
     public Server() {}
 
-    public void routes(Store d) {
+    public void routes(Store store) {
         IModel model = new BasicModel();
         this.g = new Gson();
 
@@ -32,13 +32,14 @@ public class Server {
             return null;
         });
 
-        get("/init", (req, rep) -> g.toJson(d.getGameMeta()));
+        get("/init", (req, rep) -> {
+            store.resetAgents();
+            return g.toJson(store.getGameMeta());
+        });
 
         get("/data", (req, rep) -> {
-            d.refresh();
-            GameEngine.run(d, model);
-            return g.toJson(d.getAgents());
-
+            GameEngine.run(store, model);
+            return g.toJson(store.getAgents());
         });
     }
 }

@@ -21,4 +21,12 @@ public class GameMap {
         return (x < this.width && x > 0) && (y < this.height && y > 0);
     }
 
+    /**
+     * Creates and returns a random location on this map
+     * @return
+     */
+    public Location getRandomLocation() {
+        return new Location( (int)(Math.random() * (width - 1)), (int)(Math.random() * (height - 1)), this);
+    }
+
 }

@@ -1,6 +1,5 @@
 package game;
 
-import controller.Store;
 import learning.IModel;
 
 import java.util.Arrays;
@@ -50,16 +49,14 @@ public class GameEngine {
                                       .forEach(Agent::executeAction));
 
         // get new children and join them
-        List<Agent> maters =  agents.stream()
-                                    .filter(agent -> agent.isDoing(Action.MATE))
-                                    .collect(Collectors.toList());
-
         List<Agent> children =
-                maters.stream()
-                             .map(agent -> agent.mate(maters.stream().filter(other -> agent.adjacentTo(other)).findFirst()))
-                             .filter(Optional::isPresent)
-                             .map(Optional::get)
-                             .collect(Collectors.toList());
+                agents.stream()
+                        .filter(agent -> agent.isDoing(Action.MATE)) //get all maters
+                        .map(agent -> agent.mate(model.determineMate(agent, //for each determine who is mating
+                            agents.stream().filter(other -> agent.adjacentTo(other)).collect(Collectors.toList()))))
+                        .filter(Optional::isPresent)    //filter for all present children
+                        .map(opt -> opt.get())          //can't be reduced
+                        .collect(Collectors.toList());
 
         // add the new
         agents.addAll(children);
@@ -67,10 +64,21 @@ public class GameEngine {
         // clear the dead & the old
         agents.stream().forEach(Agent::cleanUp);
 
+        // determine rewards
+        agents.stream().forEach(Agent::determineReward);
+
         // remove the dead
         agents.removeAll(agents.parallelStream()
                                 .filter(Agent::isDead)
                                 .collect(Collectors.toList()));
+
+        // update model
+        model.update(agents.parallelStream()
+                           .map(Agent::getReward)
+                           .collect(Collectors.toList()));
+
+        // complete the step in the game
+        store.step();
 
         return agents;
     }

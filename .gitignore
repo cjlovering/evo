@@ -32,3 +32,7 @@ bin/
 
 # emacs
 .DS_STORE
+
+
+# temp files
+temp/*
