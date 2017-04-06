@@ -19,7 +19,7 @@ works smoothly.
 
 * currently a session is run, loading and starting the game (very simple)
 * its easiest to observe this by running the server and watching it in localhost
-    * the speed of the events is turned down to be obervable
+    * the speed of the events is turned down to be observable
     * 0.0.0.0:4567
 
 ## experiments
@@ -38,14 +38,13 @@ works smoothly.
         * mating, winning a fight...
 * i have list written done that I think are more intersting than these but I currently forget..
 
-## questions
+## questions to explore
 
 * do the peasants work together?
-* need to find reasonable parameters were its competitive
 * do the predators work together? 
-* consider adding more pressure, possibly add:
-    * peasants die if they don't rest for 2 days out of every 5
-    * predators die if they don't east 1 out of 10 days
+* will they 'betray' each other?
+* do we see classical boom and bust of population?
+* is the game setup to the point where its fair?
 
 ## plans
 
@@ -57,7 +56,8 @@ works smoothly.
 
 ## tweaks to try
 
-* percentatges for victory for each class for a fight, currently 95% and 5% (pred, prey)
-* amount of hunger
-* max age
+* need to find reasonable parameters were its competitive
+    * percentatges for victory for each class for a fight, currently 95% and 5% (pred, prey)
+    * amount of hunger
+    * max age
 
